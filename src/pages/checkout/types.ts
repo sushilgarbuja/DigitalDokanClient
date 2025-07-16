@@ -19,10 +19,9 @@ export interface IOrder{
 
 
 export enum PaymentMethod{
-    khalti="khalti",
-    esewa="esewa",
+    Khalti="khalti",
+    Esewa="esewa",
     COD="COD"
-
 }
 export interface IData{
     firstName:string,
@@ -34,6 +33,6 @@ export interface IData{
     state:string,
     addressLine:string,
     totalAmount:number,
-    PaymentMethod:PaymentMethod,
+    paymentMethod:PaymentMethod,
     products:IProduct[]
 }

@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import Navbar from "../../globals/components/Navbar"
 import { useAppDispatch, useAppSelector } from "../../store/hooks"
 import { PaymentMethod, type IData } from "./types";
@@ -8,8 +8,9 @@ import Footer from "../../globals/components/Footer";
 
 function Checkout() {
     const dispatch = useAppDispatch()
-    const { items } = useAppSelector((store) => store.cart)
-    console.log(items);
+    const { items, } = useAppSelector((store) => store.cart)
+    const { khaltiUrl } = useAppSelector((store) => store.order)
+    console.log(khaltiUrl);
 
     const subTotal = items.reduce((total, item) => item.Product.productPrice * item.quantity + total, 0)
 
@@ -28,7 +29,7 @@ function Checkout() {
         state: "",
         addressLine: "",
         totalAmount: total,
-        PaymentMethod: PaymentMethod.COD,
+        paymentMethod: PaymentMethod.COD,
         products: []
     })
     const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(PaymentMethod.COD)
@@ -36,7 +37,7 @@ function Checkout() {
         setPaymentMethod(paymentData)
         setData({
             ...data,
-            PaymentMethod: paymentData
+            paymentMethod: paymentData
         })
 
     }
@@ -49,7 +50,7 @@ function Checkout() {
         })
     }
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const productData = items.length > 0 ? items.map((item) => {
             return {
@@ -62,10 +63,15 @@ function Checkout() {
             products: productData,
             totalAmount: total
         }
-        dispatch(OrderItem(finalData))
+        await dispatch(OrderItem(finalData))
     }
 
-
+    useEffect(() => {
+        if (khaltiUrl) {
+            window.location.href = khaltiUrl
+            return;
+        }
+    }, [khaltiUrl])
 
     return (
         <>
@@ -145,8 +151,8 @@ function Checkout() {
                                     <select name="" id="paymentMethod" onChange={(e) => handlePaymentMethod(e.target.value as PaymentMethod)}>
 
                                         <option value={PaymentMethod.COD}>COD</option>
-                                        <option value={PaymentMethod.khalti}>Khalti</option>
-                                        <option value={PaymentMethod.esewa}>Esewa
+                                        <option value={PaymentMethod.Khalti}>Khalti</option>
+                                        <option value={PaymentMethod.Esewa}>Esewa
 
                                         </option>
 
@@ -160,12 +166,12 @@ function Checkout() {
                                     )
                                 }
                                 {
-                                    paymentMethod === PaymentMethod.khalti && (
+                                    paymentMethod === PaymentMethod.Khalti && (
                                         <button type="submit" className="rounded-md px-4 py-2.5 w-full text-sm tracking-wide bg-purple-600 hover:bg-purple-700 text-white">Pay with Khalti</button>
                                     )
                                 }
                                 {
-                                    paymentMethod === PaymentMethod.esewa && (
+                                    paymentMethod === PaymentMethod.Esewa && (
                                         <button type="submit" className="rounded-md px-4 py-2.5 w-full text-sm tracking-wide bg-green-600 hover:bg-green-700 text-white">Pay with Esewa</button>
                                     )
                                 }

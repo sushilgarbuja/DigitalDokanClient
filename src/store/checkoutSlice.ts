@@ -33,24 +33,25 @@ export default orderSlice.reducer
 
 const {setItems,setStatus,setKhaltiUrl}= orderSlice.actions
 
-export function OrderItem(data:IData){
-    return async function orderItemThunk (dispatch:AppDispatch){
-        try{
-          const response=  await APIWITHTOKEN.post("/order",data)
-          if(response.status===200){
-            dispatch(setStatus(Status.SUCCESS))
-            dispatch(setItems(response.data.data))
-            if(response.data.url){
-                dispatch(setKhaltiUrl(response.data.url))
-            }
-          }else{
-            dispatch(setStatus(Status.ERROR))
-          }
-        }
-        catch (error){
-            console.log(error)
-            dispatch(setStatus(Status.ERROR))
+export function OrderItem(data: IData) {
+  return async function orderItemThunk(dispatch: AppDispatch) {
+    try {
+      const response = await APIWITHTOKEN.post("/order", data);
+      if (response.status === 200) {
+        dispatch(setStatus(Status.SUCCESS));
+        dispatch(setItems(response.data.data));
 
+        if (response.data.paymentUrl) {
+          dispatch(setKhaltiUrl(response.data.paymentUrl)); // ✅ fix here
+          window.location.href = response.data.paymentUrl;
         }
+      } else {
+        dispatch(setStatus(Status.ERROR));
+      }
+    } catch (error) {
+      console.log(error);
+      dispatch(setStatus(Status.ERROR));
     }
+  };
 }
+

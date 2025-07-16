@@ -10,6 +10,7 @@ import SingleProduct from './pages/single-product/SingleProduct'
 import About from './pages/about/About'
 import MyCart from './pages/cart/my-cart'
 import Checkout from './pages/checkout/Checkout'
+import Blog from './pages/blog/Blog'
 function App() {
 
 
@@ -25,6 +26,7 @@ function App() {
           <Route path='/about' element={<About />} />
           <Route path='/my-cart' element={<MyCart />} />
           <Route path='/my-checkout' element={<Checkout />} />
+          <Route path='/blog' element={<Blog />} />
         </Routes>
       </BrowserRouter>
     </Provider>
