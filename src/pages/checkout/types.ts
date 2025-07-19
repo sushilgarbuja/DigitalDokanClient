@@ -1,20 +1,28 @@
 
+
 import type { Status } from "../../globals/types/type";
+import type { IOrderDetail } from "../my-orders-details/types";
 
 
 interface IProduct{
     productId: string,
-    productQty: number
+    productQty: number,
+    orderStatus?:string,
+    totalAmount?:number,
+    Payment?:{
+        paymentMethod:PaymentMethod,
+    }
 }
 
 export interface IOrderItems extends IProduct{
-    orderId: string
+    id: string
 }
 
 export interface IOrder{
     status: Status,
     items: IOrderItems[],
-    khaltiUrl:string | null
+    khaltiUrl:string | null,
+    orderDetails:IOrderDetail[]
 }
 
 
