@@ -24,13 +24,16 @@ export interface IOrderDetail{
     createdAt:string,
     orderId:string,
     productId:string,
-    Order:{
-        OrderStatus:OrderStatus,
+    order:{
+        orderStatus:OrderStatus,
         AddressLine:string,
         City:string,
         State:string,
         totalAmount:number,
         phoneNumber:string,
+        firstName:string,
+        lastName:string,
+        userId:string,
         Payment:{
             paymentMethod:PaymentMethod,
             paymentStatus:PaymentStatus
@@ -38,9 +41,10 @@ export interface IOrderDetail{
         
     },
     Product:{
-        productImageUrl:string,
+        productImage:string,
         productName:string,
         productPrice:number,
+        totalAmount:number,
         Category:{
             categoryName:string,
         }
