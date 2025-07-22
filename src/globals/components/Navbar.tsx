@@ -32,6 +32,7 @@ function Navbar() {
                     <div className="hidden md:flex space-x-6 text-gray-700 font-medium">
                         <Link to="/" className="hover:text-blue-600 transition">Home</Link>
                         <Link to="/products" className="hover:text-blue-600 transition">Products</Link>
+                        <Link to="/my-orders" className="hover:text-blue-600 transition">My Orders</Link>
                         <Link to="/about" className="hover:text-blue-600 transition">About</Link>
                         <Link to="/blog" className="hover:text-blue-600 transition">Blog</Link>
 
