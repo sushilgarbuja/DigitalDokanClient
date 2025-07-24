@@ -8,13 +8,15 @@ import { API, APIWITHTOKEN } from "../http"
 
 interface ICategory{
     id:string,
-    categoryName:string
+    categoryName:string,
+    createdAt:string,
 }
 
 interface ICategoryInitialState {
     items:{
         id:string,
-        categoryName:string
+        categoryName:string,
+        createdAt:string
     }[],
     status:Status,
     
@@ -35,35 +37,41 @@ const categorySlice = createSlice({
         setStatus(state: ICategoryInitialState, action: PayloadAction<Status>) {
             state.status = action.payload
         },
-        
+        addCategoryToItems(state: ICategoryInitialState, action: PayloadAction<ICategory>) {
+            state.items.push(action.payload)
+        },
         setDeleteCategoryItem(state: ICategoryInitialState, action: PayloadAction<string>) {
             const index = state.items.findIndex((item => item.id == action.payload))
             if (index !== -1) {
                 state.items.splice(index, 1)
             }
+        },
+        resetStatus(state: ICategoryInitialState) {
+            state.status = Status.LOADING
         }
     }
 })
 
-const { setItems, setStatus,setDeleteCategoryItem } = categorySlice.actions
-export { setItems, setStatus, setDeleteCategoryItem }
+const { setItems, setStatus,setDeleteCategoryItem,addCategoryToItems,resetStatus} = categorySlice.actions
+export { setItems, setStatus, setDeleteCategoryItem,addCategoryToItems,resetStatus }
 export default categorySlice.reducer
 
 export function addCategory(categoryName: string) {
-    return async function addCategoryThunk(dispatch: AppDispatch) {
-        try {
-            const response = await APIWITHTOKEN.post("/category",{categoryName:categoryName} )
-            if (response.status === 200) {
-                dispatch(setItems(response.data.data))
-                dispatch(setStatus(Status.SUCCESS))
-            } else {
-                dispatch(setStatus(Status.ERROR))
-            }
-        } catch (error) {
-            console.log(error)
-            dispatch(setStatus(Status.ERROR))
-        }
+  return async function addCategoryThunk(dispatch: AppDispatch) {
+    try {
+      const response = await APIWITHTOKEN.post("/category", { categoryName });
+      if (response.status === 201) {
+       dispatch(addCategoryToItems(response.data.data));
+        dispatch(setStatus(Status.SUCCESS));
+        return response.data.data;
+      } else {
+        dispatch(setStatus(Status.ERROR));
+      }
+    } catch (error) {
+      console.log(error);
+      dispatch(setStatus(Status.ERROR));
     }
+  };
 }
 
 export function fetchCategoryItems() {

@@ -1,6 +1,7 @@
-import { useState, type FormEvent } from "react"
+import { useEffect, useState, type FormEvent } from "react"
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks"
-import { addCategory } from "../../../../store/adminCategorySlice"
+import { addCategory, resetStatus } from "../../../../store/adminCategorySlice"
+import { Status } from "../../../../globals/types/type"
 
 
 
@@ -16,11 +17,15 @@ function Modal({ closeModal }: { closeModal: () => void }) {
             dispatch(addCategory(categoryName))
         } catch (error) {
             console.log(error)
-        } finally {
-            setLoading(false)
-            closeModal()
         }
     }
+    useEffect(() => {
+        if (status === Status.SUCCESS) {
+            setLoading(false)
+            closeModal()
+            dispatch(resetStatus())
+        }
+    }, [status])
     return (
         <div id="modal" className="fixed inset-0 z-50 flex items-center justify-center">
             <div className="fixed inset-0 bg-black/50" />

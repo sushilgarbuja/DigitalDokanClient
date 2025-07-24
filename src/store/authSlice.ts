@@ -105,4 +105,3 @@ export function forgotPassword(data:{email:string}){
             dispatch(setStatus(Status.ERROR))
         }}
 }
-

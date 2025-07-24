@@ -8,7 +8,8 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks"
 
 export interface ICategory {
     id: string,
-    categoryName: string
+    categoryName: string,
+    createdAt: string
 }
 
 function Categories() {

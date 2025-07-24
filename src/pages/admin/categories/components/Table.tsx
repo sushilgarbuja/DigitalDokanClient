@@ -3,7 +3,7 @@ import type { ICategory } from "../Categories"
 
 import { useAppDispatch } from "../../../../store/hooks"
 import { handleCategoryItemDelete } from "../../../../store/adminCategorySlice"
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import Modal from "./Modal"
 
 
@@ -23,12 +23,9 @@ function CategoryTable({ categories }: { categories: ICategory[] }) {
 
     const filteredCategories = categories.filter((category) => category.categoryName.toLowerCase().includes(searchTerm.toLowerCase()) || category.id.includes(searchTerm.toLowerCase()))
 
-    const openModal = () => {
-        setIsModalOpen(true)
-    }
-    const closeModal = () => {
-        setIsModalOpen(false)
-    }
+    const openModal = useCallback(() => setIsModalOpen(true), [])
+    const closeModal = useCallback(() => setIsModalOpen(false), [])
+
 
     return (
         <>
@@ -45,7 +42,7 @@ function CategoryTable({ categories }: { categories: ICategory[] }) {
                                 </svg>
                             </div>
                             <div className="flex justify-between">
-                                <input onChange={(e) => setSearchTerm(e.target.value)} type="text" id="default-search" className="block w-80 h-11 pr-5 pl-12 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none" placeholder="Search for company" />
+                                <input onChange={(e) => setSearchTerm(e.target.value)} type="text" id="default-search" className="block w-80 h-11 pr-5 pl-12 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none" placeholder="Search Category" />
                                 <button className="p-2 rounded group transition-all duration-500  flex item-center bg-blue-600 text-white" onClick={openModal}>+Category</button>
                             </div>
                         </div>
@@ -56,7 +53,7 @@ function CategoryTable({ categories }: { categories: ICategory[] }) {
 
                                         <th scope="col" className="p-5 text-left text-sm leading-6 font-semibold text-gray-900 capitalize"> Category ID </th>
                                         <th scope="col" className="p-5 text-left text-sm leading-6 font-semibold text-gray-900 capitalize"> Category Name </th>
-
+                                        <th scope="col" className="p-5 text-left text-sm leading-6 font-semibold text-gray-900 capitalize"> Created At </th>
                                         <th scope="col" className="p-5 text-left text-sm leading-6 font-semibold text-gray-900 capitalize rounded-t-xl"> Actions </th>
 
                                     </tr>
@@ -69,6 +66,7 @@ function CategoryTable({ categories }: { categories: ICategory[] }) {
                                                     <td className="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> {category.id}</td>
 
                                                     <td className="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> {category.categoryName}</td>
+                                                    <td className="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> {(new Date(category.createdAt)).toLocaleDateString()}</td>
                                                     <td className=" p-5 ">
                                                         <div className="flex items-center gap-1">
                                                             <button className="p-2  rounded-full  group transition-all duration-500  flex item-center">
