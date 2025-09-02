@@ -18,6 +18,7 @@ function Categories() {
 
     useEffect(() => {
         dispatch(fetchCategoryItems())
+
     }, [])
     return (
         <>

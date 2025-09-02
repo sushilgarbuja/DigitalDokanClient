@@ -7,7 +7,8 @@ import type { IProduct, IProducts } from "../pages/product/types/types";
 import type { AppDispatch } from "./store";
 import axios from "axios";
 import type { RootState } from "./store";
-import { API } from "../http";
+import { APIWITHTOKEN2} from "../http";
+
 
 
 const initialState:IProducts={
@@ -43,7 +44,7 @@ export default productSlice.reducer
 export function fetchProducts(){
     return async function fetchProductsThunk(dispatch:AppDispatch){
         try {
-            const response=await axios.get("http://localhost:4000/api/product")
+            const response=await APIWITHTOKEN2.get("/api/product")
             if(response.status===200){
                 dispatch(setStatus(Status.SUCCESS))
                 dispatch(setProducts(response.data.data))
@@ -66,10 +67,10 @@ export function fetchProduct(id:string){
             dispatch(setStatus(Status.SUCCESS))
         }else{
             try {
-                const response = await API.get("/product/" + id)
+                const response = await axios.get('http://localhost:4000/api/product/' + id)
                 if(response.status === 200){
                     dispatch(setStatus(Status.SUCCESS))
-                    dispatch(setProduct( response.data.data))
+                    dispatch(setProduct( response.data.data.length>0 && response.data.data[0]))
                 }else{
                     dispatch(setStatus(Status.ERROR))
                 }

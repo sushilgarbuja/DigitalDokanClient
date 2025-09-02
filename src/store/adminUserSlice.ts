@@ -1,8 +1,10 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { Status } from './../globals/types/type';
-import { APIWITHTOKEN } from '../http';
+
 import type { AppDispatch } from './store';
-import axios from 'axios';
+
+import {  APIWITHTOKEN2 } from '../http';
+
 
 
 
@@ -46,20 +48,23 @@ export default userSlice.reducer
 
 
 //fetch users
+
 export function fetchUsers(){
     return async function fetchUsersThunk(dispatch:AppDispatch){
         try {
-            const response=await axios.get("http://localhost:4000/api/users")
-            if(response.status===200){
-                dispatch(setStatus(Status.SUCCESS))
-                dispatch(setUsers(response.data.data))
-            }else{
-                dispatch(setStatus(Status.ERROR))
+           
+            const response = await APIWITHTOKEN2.get("users");
+            if(response.status === 200){
+                dispatch(setStatus(Status.SUCCESS));
+                dispatch(setUsers(response.data.data));
+            } else {
+                console.log('Error fetching users:', response.status);
+                dispatch(setStatus(Status.ERROR));
             }
-            return response.data
+            return response.data;
         } catch (error) {
-            console.log(error)
-            dispatch(setStatus(Status.ERROR))
+            console.log('Error fetching users:', error);
+            dispatch(setStatus(Status.ERROR));
         }
     }
 }
@@ -69,7 +74,7 @@ export function fetchUsers(){
 export function deleteUserById(id:string){
     return async function deleteUserByIdThunk(dispatch:AppDispatch){
         try {
-            const response=await APIWITHTOKEN.delete("/auth/users/"+id)
+            const response=await APIWITHTOKEN2.delete(`/users/${id}`)
             if(response.status===200){
                 dispatch(setStatus(Status.SUCCESS))
                 dispatch(deleteUser(id))

@@ -3,7 +3,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
 import { Status } from "../globals/types/type"
 import type { AppDispatch } from "./store"
-import { API, APIWITHTOKEN } from "../http"
+import {APIWITHTOKEN } from "../http"
 
 
 interface ICategory{
@@ -77,7 +77,7 @@ export function addCategory(categoryName: string) {
 export function fetchCategoryItems() {
     return async function fetchCategoryItemsThunk(dispatch: AppDispatch) {
         try {
-            const response = await API.get("/category")
+            const response = await APIWITHTOKEN.get("/category")
             if (response.status === 200) {
                 dispatch(setItems(response.data.data))
                 dispatch(setStatus(Status.SUCCESS))

@@ -16,5 +16,15 @@ const APIWITHTOKEN=axios.create({
         "Authorization":localStorage.getItem("tokenhoYo")
     }
 })
+const APIWITHTOKEN2=axios.create({
+    baseURL:"http://localhost:4000/",
+    headers:{
+        "Content-Type":"application/json",
+        "Accept":"application/json",
+        "Authorization":localStorage.getItem("tokenhoYo")
+    }
+})
 
-export {API,APIWITHTOKEN}
+
+
+export {API,APIWITHTOKEN,APIWITHTOKEN2}

@@ -1,6 +1,7 @@
+import { Status } from './../globals/types/type';
 import { OrderStatus } from './../../../server/src/globals/types/index';
 import {createSlice, type PayloadAction } from "@reduxjs/toolkit"
-import { Status } from "../globals/types/type"
+
 import type { IData, IOrder, IOrderItems } from "../pages/checkout/types"
 import type { AppDispatch } from "./store"
 import { APIWITHTOKEN } from "../http"
@@ -41,13 +42,21 @@ const orderSlice=createSlice({
             datas.order.orderStatus=OrderStatus.Cancelled
         }
 
+
+    },
+    updateOrderStatusinSlice(state:IOrder,action:PayloadAction<{status:OrderStatus,userId:string,orderId:string}>) {
+        const {status,orderId}=action.payload
+        const updateOrder= state.items.map((order)=>order.id==orderId?{
+            ...order,OrderStatus:status
+        }:order)
+        state.items=updateOrder
     }
 }
 })
 
 export default orderSlice.reducer
 
-const {setItems,setStatus,setKhaltiUrl,setOrderDetails,updateOrderStatusToCancel}= orderSlice.actions
+export const {setItems,setStatus,setKhaltiUrl,setOrderDetails,updateOrderStatusToCancel,updateOrderStatusinSlice}= orderSlice.actions
 
 export function OrderItem(data: IData) {
   return async function orderItemThunk(dispatch: AppDispatch) {

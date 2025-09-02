@@ -14,6 +14,10 @@ import adminCategorySlice from "./adminCategorySlice"
 
 import adminUserSlice from "./adminUserSlice"
 
+import adminProductSlice from "./adminProductSlice"
+
+import adminOrderSlice from "./adminOrderSlice"
+
 const store = configureStore({
     reducer:{
         auth:authSlice,
@@ -21,7 +25,9 @@ const store = configureStore({
         cart:cartSlice,
         order:orderSlice,
         categories:adminCategorySlice,
-        user:adminUserSlice
+        users:adminUserSlice,
+        adminProducts:adminProductSlice,
+        adminOrders:adminOrderSlice
 
     }
 })

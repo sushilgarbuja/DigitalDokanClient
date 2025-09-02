@@ -2,8 +2,10 @@ import { useEffect, useState } from "react"
 import Footer from "../../globals/components/Footer"
 import Navbar from "../../globals/components/Navbar"
 import { useAppDispatch, useAppSelector } from "../../store/hooks"
-import { fetchOrderItems } from "../../store/checkoutSlice"
+import { fetchOrderItems, updateOrderStatusinSlice } from "../../store/checkoutSlice"
 import { Link } from "react-router-dom"
+import { socket } from "../../store/socket"
+
 
 
 
@@ -20,6 +22,12 @@ function MyOrder() {
     useEffect(() => {
         dispatch(fetchOrderItems())
     }, [])
+
+    useEffect(() => {
+        socket.on("updateOrderStatus", (data: any) => {
+            dispatch(updateOrderStatusinSlice(data))
+        })
+    }, [socket])
     return (
         <>
             <Navbar />
