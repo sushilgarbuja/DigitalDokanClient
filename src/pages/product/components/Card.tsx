@@ -1,38 +1,99 @@
-import React from 'react'
-import type { IProduct } from '../types/types'
-import { Link } from 'react-router-dom'
-
-
+import React from "react";
+import type { IProduct } from "../types/types";
+import { Link } from "react-router-dom";
+import { ShoppingBag } from "lucide-react";
 
 interface ICardProps {
-    product: IProduct
+    product: IProduct;
 }
 
 const Card: React.FC<ICardProps> = ({ product }) => {
+    // Calculate discount percentage safely
+    const discountPercentage =
+        product.discount && product.discount > product.productPrice
+            ? Math.floor(((product.discount - product.productPrice) / product.discount) * 100)
+            : 0;
+
     return (
         <Link to={`/product/${product.id}`}>
-            <div className="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+            <div
+                className="
+          bg-white 
+          rounded-2xl 
+          shadow-lg 
+          overflow-hidden 
+          transition-all 
+          duration-500 
+          hover:scale-[1.03] 
+          hover:shadow-2xl 
+          hover:-translate-y-1 
+          w-full 
+          max-w-xs 
+          mx-auto
+        "
+            >
+                {/* Image Section */}
+                <div className="relative">
+                    <img
+                        src={product.productImage}
+                        alt={product.productName}
+                        className="w-full h-64 object-cover transition-transform duration-500 hover:scale-110"
+                    />
 
-                <img src={`${product.productImage}`} alt="Product" className="h-80 w-72 object-cover rounded-t-xl" />
-                <div className="px-4 py-3 w-72">
-                    <span className="text-gray-400 mr-3 uppercase text-xs">Brand</span>
-                    {/* <span className="text-gray-400 mr-3 uppercase text-xs">{product.Category.categoryName}</span> */}
-                    <p className="text-lg font-bold text-black truncate block capitalize">{product.productName}</p>
-                    <div className="flex items-center">
-                        <p className="text-lg font-semibold text-black cursor-auto my-3">${product.productPrice}</p>
-                        <del>
-                            <p className="text-sm text-gray-600 cursor-auto ml-2">${product.discount}</p>
-                        </del>
-                        <div className="ml-auto"><svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} fill="currentColor" className="bi bi-bag-plus" viewBox="0 0 16 16">
-                            <path fillRule="evenodd" d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z" />
-                            <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
-                        </svg></div>
-                    </div>
+                    {/* Discount Tag */}
+                    {discountPercentage > 0 && (
+                        <div className="absolute top-3 left-3 bg-gradient-to-r from-red-600 to-orange-500 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+                            -{discountPercentage}%
+                        </div>
+                    )}
+
+                    {/* Subtle Glass Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                 </div>
 
+                {/* Product Details */}
+                <div className="p-4 flex flex-col gap-2">
+                    <span className="text-gray-400 text-xs uppercase tracking-wider">
+                        BRAND
+                    </span>
+                    <h3 className="text-lg font-semibold text-gray-900 truncate">
+                        {product.productName}
+                    </h3>
+
+                    <div className="flex items-center justify-between mt-2">
+                        <div className="flex items-center gap-2">
+                            <span className="text-xl font-bold text-black">
+                                ${product.productPrice}
+                            </span>
+                            {product.discount && (
+                                <del className="text-sm text-gray-500">${product.discount}</del>
+                            )}
+                        </div>
+
+                        {/* Add to Cart Button */}
+                        <button
+                            className="
+                p-2 
+                bg-gradient-to-r 
+                from-gray-100 
+                to-gray-200 
+                rounded-full 
+                hover:from-black 
+                hover:to-gray-800 
+                hover:text-white 
+                transition-colors 
+                duration-300
+                shadow-sm
+              "
+                            title="Add to Cart"
+                        >
+                            <ShoppingBag size={20} />
+                        </button>
+                    </div>
+                </div>
             </div>
         </Link>
-    )
-}
+    );
+};
 
-export default Card
+export default Card;

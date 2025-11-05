@@ -56,7 +56,7 @@ const productSlice = createSlice({
         },
         //addProduct
         addProductToProducts(state:IInitialState,action:PayloadAction<IProductAdmin>){
-            state.products.push(action.payload)
+            state.products.unshift(action.payload)
         },
         setProduct(state:IInitialState,action:PayloadAction<IProductAdmin>){
                     state.product=action.payload
@@ -115,9 +115,9 @@ export function addProduct(data:IProduct){
                     "Content-Type": "multipart/form-data"
                 }
             })
-            if(response.status===200){
+            if(response.status===200 || response.status===201){
                 dispatch(setStatus(Status.SUCCESS))
-                dispatch(addProductToProducts(response.data.data))
+                dispatch(addProductToProducts(response.data.data || response.data))
             }else{
                 dispatch(setStatus(Status.ERROR))
             }
