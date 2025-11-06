@@ -14,6 +14,8 @@ function ProductTable({ products }: { products: IProductAdmin[] }) {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const dispatch = useAppDispatch()
 
+    //for edit
+
 
 
     const deleteProduct = async (id: string) => {
@@ -21,6 +23,10 @@ function ProductTable({ products }: { products: IProductAdmin[] }) {
             dispatch(handleProductDelete(id))
         }
     }
+
+    //for edit product
+
+
     const filteredProducts = products.filter((product) => product.id.includes(searchTerm) || product.productName.toLowerCase().includes(searchTerm))
     const openModal = useCallback(() => setIsModalOpen(true), [])
     const closeModal = useCallback(() => setIsModalOpen(false), [])

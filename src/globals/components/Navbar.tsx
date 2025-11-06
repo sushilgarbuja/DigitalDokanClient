@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { fetchCartItems } from "../../store/cartSlice";
-import { ShoppingCart, Menu, X, User, LogIn, LogOut } from "lucide-react";
+import { ShoppingCart, Menu, X, LogIn, LogOut } from "lucide-react";
 
 function Navbar() {
     const reduxToken = useAppSelector((store) => store.auth.user.token);

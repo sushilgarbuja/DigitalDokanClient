@@ -1,6 +1,7 @@
+
 function HeroSection() {
     return (
-        <section className="relative bg-gradient-to-b from-blue-50 via-white to-blue-100 py-16 overflow-hidden">
+        <section className="relative bg-gradient-to-b from-blue-50 via-white to-blue-100 py-16 min-h-screen overflow-hidden font-poppins">
             {/* Soft background effects */}
             <div className="absolute -top-16 -left-10 w-44 h-44 bg-blue-200 rounded-full blur-3xl opacity-40"></div>
             <div className="absolute bottom-0 right-0 w-60 h-60 bg-orange-200 rounded-full blur-3xl opacity-40"></div>

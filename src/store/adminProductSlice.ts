@@ -58,6 +58,14 @@ const productSlice = createSlice({
         addProductToProducts(state:IInitialState,action:PayloadAction<IProductAdmin>){
             state.products.unshift(action.payload)
         },
+        //editProduct
+        editProductInProducts(state:IInitialState,action:PayloadAction<IProductAdmin>){
+            const index=state.products.findIndex((product)=>product.id===action.payload.id)
+            if(index!==-1){
+                state.products[index]=action.payload
+            }
+        },
+        
         setProduct(state:IInitialState,action:PayloadAction<IProductAdmin>){
                     state.product=action.payload
                 },
@@ -65,7 +73,7 @@ const productSlice = createSlice({
     }
 })
 
-export const {setProducts,setStatus,deleteProduct,addProductToProducts,setProduct}=productSlice.actions
+export const {setProducts,setStatus,deleteProduct,addProductToProducts, editProductInProducts,setProduct}=productSlice.actions
 export default productSlice.reducer
 
 
@@ -117,7 +125,9 @@ export function addProduct(data:IProduct){
             })
             if(response.status===200 || response.status===201){
                 dispatch(setStatus(Status.SUCCESS))
-                dispatch(addProductToProducts(response.data.data || response.data))
+                dispatch(AdminfetchProducts())
+                // dispatch(addProductToProducts(response.data.data || response.data))
+                
             }else{
                 dispatch(setStatus(Status.ERROR))
             }
@@ -150,6 +160,29 @@ export function fetchProductAdmin(id:string){
                 console.log(error)
                 dispatch(setStatus(Status.ERROR))
             }
+        }
+    }
+}
+
+//for edit product
+export function editProduct(id:string,data:IProduct){
+    return async function editProductThunk(dispatch:AppDispatch){
+        try {
+            const response=await API.put(`/product/${id}`,data,{
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            })
+            if(response.status===200){
+                dispatch(setStatus(Status.SUCCESS))
+                dispatch(editProductInProducts(response.data.data))
+            }else{
+                dispatch(setStatus(Status.ERROR))
+            }
+            return response.data
+        } catch (error) {
+            console.log(error)
+            dispatch(setStatus(Status.ERROR))
         }
     }
 }

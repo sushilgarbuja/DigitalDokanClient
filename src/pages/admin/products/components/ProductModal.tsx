@@ -35,11 +35,18 @@ function ProductModal({ closeModal }: { closeModal: () => void }) {
         categoryId: ""
     })
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        const { name, value } = e.target
-        setData({
-            ...data,
-            [name]: name === "productImage" ? e.target.files![0] : value
-        })
+        const target = e.target as HTMLInputElement;
+        if (target instanceof HTMLInputElement && target.type === 'file') {
+            setData({
+                ...data,
+                [e.target.name]: target.files![0]
+            });
+        } else {
+            setData({
+                ...data,
+                [e.target.name]: e.target.value
+            });
+        }
     }
     const { items } = useAppSelector((store) => store.categories)
 
