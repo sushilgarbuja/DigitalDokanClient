@@ -60,7 +60,7 @@ const Card: React.FC<ICardProps> = ({ product }) => {
 
                     <div className="flex items-center justify-between mt-3">
                         <div className="flex items-baseline gap-2">
-                            <span className="text-xl font-bold text-blue-600">${product.productPrice}</span>
+                            <span className="text-xl font-bold text-blue-600">Rs.{product.productPrice}</span>
                             {product.discount && (
                                 <del className="text-sm text-gray-400">${product.discount}</del>
                             )}

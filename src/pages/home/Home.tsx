@@ -16,7 +16,6 @@ function Home() {
             <ProductFeatures />
             <WhyChooseUs />
             <TestimonialSection />
-
             <Footer />
         </>
     )
